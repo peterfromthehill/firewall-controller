@@ -12,8 +12,11 @@ require (
 	github.com/metal-stack/metal-lib v0.9.0
 	github.com/metal-stack/metal-networker v0.8.3
 	github.com/metal-stack/v v1.0.3
+	github.com/miekg/dns v1.0.14
+	github.com/rakyll/statik v0.1.7
 	github.com/txn2/txeh v1.3.0
 	github.com/vishvananda/netlink v1.1.0
+	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150
 	k8s.io/api v0.23.6
 	k8s.io/apiextensions-apiserver v0.23.6
 	k8s.io/apimachinery v0.23.6
@@ -76,10 +79,10 @@ require (
 	go.uber.org/zap v1.21.0 // indirect
 	go4.org/intern v0.0.0-20220301175310-a089fc204883 // indirect
 	go4.org/unsafe/assume-no-moving-gc v0.0.0-20211027215541-db492cf91b37 // indirect
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4 // indirect
 	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
 	golang.org/x/term v0.0.0-20220411215600-e5f449aeb171 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20220411224347-583f2d630306 // indirect
