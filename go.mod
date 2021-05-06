@@ -6,6 +6,12 @@ require (
 	github.com/go-logr/logr v1.2.3
 	github.com/google/go-cmp v0.5.8
 	github.com/google/nftables v0.0.0-20220422151220-76ed01e300f2
+	//=======
+	//	cloud.google.com/go v0.81.0 // indirect
+	//	github.com/go-logr/zapr v1.2.0 // indirect
+	//	github.com/google/gofuzz v1.2.0 // indirect
+	//	github.com/google/nftables v0.0.0-20211209220838-6f19c4381e13
+	//>>>>>>> CNWP controller test added
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/ks2211/go-suricata v0.0.0-20200823200910-986ce1470707
 	github.com/metal-stack/metal-go v0.16.6
@@ -13,6 +19,8 @@ require (
 	github.com/metal-stack/metal-networker v0.8.3
 	github.com/metal-stack/v v1.0.3
 	github.com/miekg/dns v1.0.14
+	github.com/onsi/ginkgo v1.16.5
+	github.com/onsi/gomega v1.17.0
 	github.com/txn2/txeh v1.3.0
 	github.com/vishvananda/netlink v1.1.0
 	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150
@@ -50,7 +58,6 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/gnostic v0.5.5 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
@@ -98,4 +105,10 @@ require (
 	k8s.io/kube-openapi v0.0.0-20211115234752-e816edb12b65 // indirect
 	sigs.k8s.io/json v0.0.0-20211208200746-9f7c6b3444d2 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.1 // indirect
+)
+
+require (
+	github.com/google/gofuzz v1.1.0 // indirect
+	github.com/nxadm/tail v1.4.8 // indirect
+	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 )
