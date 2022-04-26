@@ -13,7 +13,7 @@ require (
 	github.com/metal-stack/metal-lib v0.9.0
 	github.com/metal-stack/metal-networker v0.8.4-0.20220525194712-c94e89eacdf5
 	github.com/metal-stack/v v1.0.3
-	github.com/miekg/dns v1.1.43
+	github.com/miekg/dns v1.1.48
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.17.0
 	github.com/txn2/txeh v1.3.0
@@ -101,4 +101,10 @@ require (
 	k8s.io/kube-openapi v0.0.0-20211115234752-e816edb12b65 // indirect
 	sigs.k8s.io/json v0.0.0-20211208200746-9f7c6b3444d2 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.1 // indirect
+)
+
+require (
+	golang.org/x/mod v0.5.1 // indirect
+	golang.org/x/tools v0.1.8 // indirect
+	golang.org/x/xerrors v0.0.0-20220411194840-2f41105eb62f // indirect
 )
