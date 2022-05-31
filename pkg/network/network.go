@@ -6,9 +6,10 @@ import (
 	"path/filepath"
 	"text/template"
 
-	firewallv1 "github.com/metal-stack/firewall-controller/api/v1"
 	"github.com/metal-stack/metal-go/api/models"
 	"github.com/metal-stack/metal-networker/pkg/netconf"
+
+	firewallv1 "github.com/metal-stack/firewall-controller/api/v1"
 
 	"embed"
 )
@@ -68,7 +69,7 @@ func ReconcileNetwork(kb netconf.KnowledgeBase) (changed bool, err error) {
 		return changed, fmt.Errorf("error during network reconcilation: %v: %w", tmpFile, err)
 	}
 
-	return
+	return changed, nil
 }
 
 func tmpFile(file string) (string, error) {
