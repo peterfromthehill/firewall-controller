@@ -2,6 +2,7 @@ package network
 
 import (
 	"fmt"
+	"go.uber.org/zap"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -15,22 +16,29 @@ import (
 )
 
 const (
-	MetalKnowledgeBase = "/etc/metal/install.yaml"
-	FrrConfig          = "/etc/frr/frr.conf"
+	MetalConfigBase = "/etc/metal/install.yaml"
+	FrrConfig       = "/etc/frr/frr.conf"
 )
 
 //go:embed *.tpl
 var templates embed.FS
+var logger *zap.SugaredLogger
 
-// GetKnowledgeBase returns Knowledge Base instance filled with data only from install.yaml
-// It could be useful for retrieving host IP, before controller has the access to the kube-api.
-func GetKnowledgeBase() netconf.KnowledgeBase {
-	return netconf.NewKnowledgeBase(MetalKnowledgeBase)
+func init() {
+	l, err := zap.NewProduction()
+	if err != nil {
+		panic(err)
+	}
+
+	logger = l.Sugar()
 }
 
-// GetUpdatedKnowledgeBase return Knowledge Base instance filled with data from the Firewall resource.
-func GetUpdatedKnowledgeBase(f firewallv1.Firewall) netconf.KnowledgeBase {
-	kb := GetKnowledgeBase()
+func GetLogger() *zap.SugaredLogger {
+	return logger
+}
+
+// GetNewNetworks returns updated network models
+func GetNewNetworks(f firewallv1.Firewall, oldNetworks []*models.V1MachineNetwork) []*models.V1MachineNetwork {
 	networkMap := map[string]firewallv1.FirewallNetwork{}
 	for _, n := range f.Spec.FirewallNetworks {
 		if n.Networktype == nil {
@@ -39,20 +47,23 @@ func GetUpdatedKnowledgeBase(f firewallv1.Firewall) netconf.KnowledgeBase {
 		networkMap[*n.Networkid] = n
 	}
 
-	newNetworks := []models.V1MachineNetwork{}
-	for _, n := range kb.Networks {
+	newNetworks := []*models.V1MachineNetwork{}
+	for _, n := range oldNetworks {
+		if n == nil {
+			continue
+		}
+
 		newNet := n
 		newNet.Prefixes = networkMap[*n.Networkid].Prefixes
 		newNetworks = append(newNetworks, newNet)
 	}
-	kb.Networks = newNetworks
 
-	return kb
+	return newNetworks
 }
 
 // ReconcileNetwork reconciles the network settings for a firewall
 // Changes both the FRR-Configuration and Nftable rules when network prefixes or FRR template changes
-func ReconcileNetwork(kb netconf.KnowledgeBase) (changed bool, err error) {
+func ReconcileNetwork(f firewallv1.Firewall) (changed bool, err error) {
 	tmpFile, err := tmpFile(FrrConfig)
 	if err != nil {
 		return false, fmt.Errorf("error during network reconcilation %v: %w", tmpFile, err)
@@ -61,7 +72,13 @@ func ReconcileNetwork(kb netconf.KnowledgeBase) (changed bool, err error) {
 		os.Remove(tmpFile)
 	}()
 
-	a := netconf.NewFrrConfigApplier(netconf.Firewall, kb, tmpFile)
+	c, err := netconf.New(GetLogger(), MetalConfigBase)
+	if err != nil || c == nil {
+		return false, fmt.Errorf("failed to init networker config: %w", err)
+	}
+	c.Networks = GetNewNetworks(f, c.Networks)
+
+	a := netconf.NewFrrConfigApplier(netconf.Firewall, *c, tmpFile)
 	tpl, err := readTpl(netconf.TplFirewallFRR)
 	if err != nil {
 		return false, fmt.Errorf("error during network reconcilation: %v: %w", tmpFile, err)
